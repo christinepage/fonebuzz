@@ -1,0 +1,13 @@
+LOG:  database system was shut down at 2014-03-21 00:52:20 PDT
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "monkey_development" does not exist
+FATAL:  database "monkey_development" does not exist
+FATAL:  database "mapapp_development" does not exist
+FATAL:  database "monkey_development" does not exist
+FATAL:  database "monkey_development" does not exist
+FATAL:  database "christine" does not exist
+FATAL:  database "christine" does not exist
+FATAL:  database "monkey_development" does not exist
+FATAL:  database "mapapp_development" does not exist
+FATAL:  database "mapapp_development" does not exist
