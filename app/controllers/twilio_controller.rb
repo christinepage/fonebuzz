@@ -8,6 +8,8 @@ class TwilioController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def voice
+    logger.debug "::voice: headers:"
+    logger.debug "#{headers.inspect}"
     response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
       r.Gather :numDigits => '1', :action => 'handlegather', :method => 'post' do |g|
@@ -25,7 +27,7 @@ class TwilioController < ApplicationController
       logger.debug "#{headers.inspect}"
       logger.debug "params: #{params}"
       logger.debug "Input was #{input_num}"
-      
+
       r.Say 'You entered ' + input_num
       if (integer_str? input_num)
         r.Say "Your results are " + fizzbuzz(Integer(input_num)).join(", ")
