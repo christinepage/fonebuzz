@@ -20,12 +20,12 @@ class TwilioController < ApplicationController
       r.Gather :numDigits => '1', :action => '/handle_gather', :method => 'get' do |g|
         g.Say 'Please enter a number.'        
       end
-    end.text
+    end
     render_twiml response
   end
 
   def handle_gather
-    Twilio::TwiML::Response.new do |r|
+    response = Twilio::TwiML::Response.new do |r|
       input_num = params['Digits']
       r.Say 'You entered' + input_num
       if (integer_str? input_num)
@@ -33,7 +33,8 @@ class TwilioController < ApplicationController
       else
         r.Say "I have no results for that entry."
       end
-    end.text
+    end
+    render_twiml response
   end
 end
 
