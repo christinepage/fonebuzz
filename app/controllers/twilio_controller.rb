@@ -15,12 +15,13 @@ class TwilioController < ApplicationController
   # end
 
   def voice
-    Twilio::TwiML::Response.new do |r|      
+    response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
       r.Gather :numDigits => '1', :action => '/handle_gather', :method => 'get' do |g|
         g.Say 'Please enter a number.'        
       end
     end.text
+    render_twiml response
   end
 
   def handle_gather
