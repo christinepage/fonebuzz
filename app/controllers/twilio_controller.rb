@@ -4,13 +4,29 @@ class TwilioController < ApplicationController
   include Webhookable
  
   after_filter :set_header
-  
+  before_filter :validate_request
   skip_before_action :verify_authenticity_token
 
+  def validate_request
+    @auth_token = "ce3887304e72ec11afbb73811c9305ae"
+    validator = Twilio::Util::RequestValidator.new(@auth_token)
+    uri = request.original_url
+    signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
+    logger.debug "uri: #{uri}"
+    logger.debug "sig: #{signature}"
+    logger.debug "par: #{params}"
+    if !(validator.validate uri, params, signature)
+      logger.debug "Validation failed"
+      redirect_to root_url
+    else
+      logger.debug "Validation succeeded"
+    end
+  end
+
   def voice
+    debugger
     logger.debug "::voice: headers:"
     logger.debug "HTTP_X_TWILIO_SIGNATURE: #{request.headers['HTTP_X_TWILIO_SIGNATURE']}"
-    #logger.debug "#{request.headers.inspect}"
     response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
       r.Gather :numDigits => '1', :action => 'handlegather', :method => 'post' do |g|
