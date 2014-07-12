@@ -7,18 +7,54 @@ class TwilioController < ApplicationController
   
   skip_before_action :verify_authenticity_token
  
+  # def voice
+  #   response = Twilio::TwiML::Response.new do |r|
+  #     r.Say "#{name}, please enter a number"
+  #   end
+  #   render_twiml response
+  # end
+
   def voice
-    people = {
-    '+14158675309' => 'Curious George',
-    '+14158644854' => 'Christine'
-    }
-   
-    name = people[params['From']] || "monkey"
-    response = Twilio::TwiML::Response.new do |r|
-      r.Say "#{name}, please enter a number", :voice => 'alice'
-      #r.Play 'http://linode.rabasa.com/cantina.mp3'
-    end
- 
-    render_twiml response
+    Twilio::TwiML::Response.new do |r|      
+      r.Say 'Hello there. '
+      r.Gather :numDigits => '1', :action => '/handle_gather', :method => 'get' do |g|
+        g.Say 'Please enter a number.'        
+      end
+    end.text
+  end
+
+  def handle_gather
+    Twilio::TwiML::Response.new do |r|
+      input_num = params['Digits']
+      r.Say 'You entered' + input_num
+      if (integer_str? input_num)
+        r.Say "Your results are " + fizzbuzz(Integer(input_num)).join(", ")
+      else
+        r.Say "I have no results for that entry."
+      end
+    end.text
   end
 end
+
+
+def integer_str? num
+  Integer(num)
+  return true
+rescue ArgumentError
+  return false
+end
+
+def fizzbuzz num
+    (1..num).map do |x|
+      if ((x%15) == 0)
+        "FizzBuzz"
+      elsif ((x%5) == 0)
+        "Buzz"
+      elsif ((x%3) == 0)
+        "Fizz"
+      else
+        String(x)
+      end
+    end
+end
+
