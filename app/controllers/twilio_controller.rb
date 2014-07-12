@@ -4,10 +4,11 @@ class TwilioController < ApplicationController
   include Webhookable
  
   after_filter :set_header
-  before_filter :validate_request
+  before_action :validate_request only: [:voice, :handlegather]
   skip_before_action :verify_authenticity_token
 
   def validate_request
+    logger.debug "--------- #{self.class}::#{__method__.to_s} ---------"
     @auth_token = "ce3887304e72ec11afbb73811c9305ae"
     validator = Twilio::Util::RequestValidator.new(@auth_token)
     uri = request.original_url
@@ -15,17 +16,19 @@ class TwilioController < ApplicationController
     logger.debug "uri: #{uri}"
     logger.debug "sig: #{signature}"
     logger.debug "par: #{params}"
-    if !(validator.validate uri, params, signature)
+    if !(validator.validate(uri, params, signature))
       logger.debug "Validation failed"
-      redirect_to root_url
+      response = Twilio::TwiML::Response.new do |r|     
+        r.Say 'Sorry you are not authorized to use this application.'
+      end
+      render_twiml response
     else
       logger.debug "Validation succeeded"
     end
   end
 
   def voice
-    debugger
-    logger.debug "::voice: headers:"
+    logger.debug "--------- #{self.class}::#{__method__.to_s} ---------"
     logger.debug "HTTP_X_TWILIO_SIGNATURE: #{request.headers['HTTP_X_TWILIO_SIGNATURE']}"
     response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
@@ -37,6 +40,7 @@ class TwilioController < ApplicationController
   end
 
   def handlegather
+    logger.debug "--------- #{self.class}::#{__method__.to_s} ---------"
     response = Twilio::TwiML::Response.new do |r|
       input_num = params['Digits'] || "nothing"
 
@@ -64,6 +68,7 @@ rescue ArgumentError
 end
 
 def fizzbuzz num
+  logger.debug "--------- #{self.class}::#{__method__.to_s} ---------"
     (1..num).map do |x|
       if ((x%15) == 0)
         "FizzBuzz"
