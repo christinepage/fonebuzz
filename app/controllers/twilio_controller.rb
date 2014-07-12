@@ -17,14 +17,14 @@ class TwilioController < ApplicationController
   def voice
     response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
-      r.Gather :numDigits => '1', :action => 'handle_gather', :method => 'post' do |g|
+      r.Gather :numDigits => '1', :action => 'handlegather', :method => 'post' do |g|
         g.Say 'Please enter a number.'        
       end
     end
     render_twiml response
   end
 
-  def handle_gather
+  def handlegather
     response = Twilio::TwiML::Response.new do |r|
       input_num = params['Digits']
       r.Say 'You entered' + input_num
@@ -36,6 +36,7 @@ class TwilioController < ApplicationController
     end
     render_twiml response
   end
+  
 end
 
 
