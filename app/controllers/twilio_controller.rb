@@ -20,8 +20,12 @@ class TwilioController < ApplicationController
   def handlegather
     response = Twilio::TwiML::Response.new do |r|
       input_num = params['Digits'] || "nothing"
+
+      logger.debug "headers:"
+      logger.debug "#{headers.inspect}"
       logger.debug "params: #{params}"
       logger.debug "Input was #{input_num}"
+      
       r.Say 'You entered ' + input_num
       if (integer_str? input_num)
         r.Say "Your results are " + fizzbuzz(Integer(input_num)).join(", ")
