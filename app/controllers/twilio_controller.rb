@@ -9,7 +9,7 @@ class TwilioController < ApplicationController
 
   def voice
     logger.debug "::voice: headers:"
-    logger.debug "#{headers.inspect}"
+    logger.debug "#{request.headers.inspect}"
     response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
       r.Gather :numDigits => '1', :action => 'handlegather', :method => 'post' do |g|
@@ -24,7 +24,7 @@ class TwilioController < ApplicationController
       input_num = params['Digits'] || "nothing"
 
       logger.debug "headers:"
-      logger.debug "#{headers.inspect}"
+      logger.debug "#{request.headers.inspect}"
       logger.debug "params: #{params}"
       logger.debug "Input was #{input_num}"
 
