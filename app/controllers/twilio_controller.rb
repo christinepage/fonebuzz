@@ -4,7 +4,7 @@ class TwilioController < ApplicationController
   include Webhookable
  
   after_filter :set_header
-  before_action :validate_request only: [:voice, :handlegather]
+  before_action :validate_request, only: [:voice, :handlegather]
   skip_before_action :verify_authenticity_token
 
   def validate_request
