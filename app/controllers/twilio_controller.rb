@@ -17,7 +17,7 @@ class TwilioController < ApplicationController
   def voice
     response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
-      r.Gather :numDigits => '1', :action => '/handle_gather', :method => 'get' do |g|
+      r.Gather :numDigits => '1', :action => '/handle_gather', :method => 'post' do |g|
         g.Say 'Please enter a number.'        
       end
     end
