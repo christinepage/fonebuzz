@@ -9,7 +9,8 @@ class TwilioController < ApplicationController
 
   def voice
     logger.debug "::voice: headers:"
-    logger.debug "#{request.headers.inspect}"
+    logger.debug "HTTP_X_TWILIO_SIGNATURE: #{request.headers['HTTP_X_TWILIO_SIGNATURE']}"
+    #logger.debug "#{request.headers.inspect}"
     response = Twilio::TwiML::Response.new do |r|      
       r.Say 'Hello there. '
       r.Gather :numDigits => '1', :action => 'handlegather', :method => 'post' do |g|
@@ -23,8 +24,6 @@ class TwilioController < ApplicationController
     response = Twilio::TwiML::Response.new do |r|
       input_num = params['Digits'] || "nothing"
 
-      logger.debug "headers:"
-      logger.debug "#{request.headers.inspect}"
       logger.debug "params: #{params}"
       logger.debug "Input was #{input_num}"
 
