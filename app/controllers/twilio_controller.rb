@@ -6,13 +6,6 @@ class TwilioController < ApplicationController
   after_filter :set_header
   
   skip_before_action :verify_authenticity_token
- 
-  # def voice
-  #   response = Twilio::TwiML::Response.new do |r|
-  #     r.Say "#{name}, please enter a number"
-  #   end
-  #   render_twiml response
-  # end
 
   def voice
     response = Twilio::TwiML::Response.new do |r|      
@@ -26,8 +19,10 @@ class TwilioController < ApplicationController
 
   def handlegather
     response = Twilio::TwiML::Response.new do |r|
-      input_num = params['Digits']
-      r.Say 'You entered' + input_num
+      input_num = params['Digits'] || "nothing"
+      logger.debug "params: #{params}"
+      logger.debug "Input was #{input_num}"
+      r.Say 'You entered ' + input_num
       if (integer_str? input_num)
         r.Say "Your results are " + fizzbuzz(Integer(input_num)).join(", ")
       else
@@ -36,7 +31,7 @@ class TwilioController < ApplicationController
     end
     render_twiml response
   end
-  
+
 end
 
 
