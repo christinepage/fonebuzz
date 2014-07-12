@@ -7,6 +7,7 @@ Monkey::Application.routes.draw do
   root 'welcome#index'
 
   post 'twilio/voice' => 'twilio#voice'
+  post 'twilio/handlegather' => 'twilio#handlegather'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
