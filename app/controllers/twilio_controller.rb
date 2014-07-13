@@ -4,7 +4,7 @@ class TwilioController < ApplicationController
   include Webhookable
  
   after_filter :set_header
-  before_action :validate_request, only: [:voice, :handlegather]
+  #before_action :validate_request, only: [:voice, :handlegather]
   skip_before_action :verify_authenticity_token
 
   def validate_request
@@ -13,11 +13,13 @@ class TwilioController < ApplicationController
     validator = Twilio::Util::RequestValidator.new(@auth_token)
     uri = request.original_url
     signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
+    logger.debug "tok: #{@auth_token}"
     logger.debug "uri: #{uri}"
-    logger.debug "sig: #{signature}"
     logger.debug "par: #{params}"
+    logger.debug   "provided sig:   #{signature}"
     if !(validator.validate(uri, params, signature))
       logger.debug "Validation failed"
+      logger.debug "calculated sig: #{validator.build_signature_for(uri, params)}"
       response = Twilio::TwiML::Response.new do |r|     
         r.Say 'Sorry you are not authorized to use this application.'
       end
@@ -69,16 +71,16 @@ end
 
 def fizzbuzz num
   logger.debug "--------- #{self.class}::#{__method__.to_s} ---------"
-    (1..num).map do |x|
-      if ((x%15) == 0)
-        "FizzBuzz"
-      elsif ((x%5) == 0)
-        "Buzz"
-      elsif ((x%3) == 0)
-        "Fizz"
-      else
-        String(x)
-      end
+  (1..num).map do |x|
+    if ((x%15) == 0)
+      "FizzBuzz"
+    elsif ((x%3) == 0)
+      "Fizz"
+    elsif ((x%5) == 0)
+      "Buzz"
+    else
+      String(x)
     end
+  end
 end
 
