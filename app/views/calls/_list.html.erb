@@ -1,0 +1,27 @@
+<% if @calls.length > 0 %>
+  <h2>Redial from call log</h2>
+  <table style="border:1" >
+    <thead>
+      <tr>
+        <th>Tel Number</th>
+        <th>Time</th>
+        <th>Delay</th>
+        <th></th>
+      </tr>    
+    </thead>
+
+    <tbody>
+      <% @calls.each do |call| %>
+        <tr>
+          <td><%= call.tel_num %></td>
+          <td><%= call.call_dt %></td>
+          <td><%= call.delay %></td>
+  		    <td>
+            <%= button_to("Make Call", :action => "make_call",
+            :id => call.id, :controller =>"calls") %>
+          </td>      
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  tel_num: MyString
+  call_dt: 2014-07-13 00:19:35
+  delay: 1
+
+two:
+  tel_num: MyString
+  call_dt: 2014-07-13 00:19:35
+  delay: 1
