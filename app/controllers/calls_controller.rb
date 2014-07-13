@@ -1,6 +1,7 @@
 class CallsController < ApplicationController
 
   before_action :set_call, :only => [:make_call]
+	#before_action :set_call_list, :only => [:index]
 
  # GET /calls
   def index
@@ -21,10 +22,13 @@ class CallsController < ApplicationController
     	flash[:notice] = 'Telephone number was logged.'
     	make_call
     else
-    	render action: 'new'
+    	flash[:notice] = 'There was an error with that telephone number.'
+    	flash[:errors] = @call.errors.full_messages
+    	redirect_to :action => 'index'
     end
   end
 
+  # POST /calls/:id/make_call
   def make_call
   	(flash[:notice] ||= "") << " Dialing " + @call.tel_num + "..."
   	redirect_to :action => 'index'

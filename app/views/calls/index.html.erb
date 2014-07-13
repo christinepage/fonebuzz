@@ -11,3 +11,11 @@
 <% if flash[:notice] %>
     <div class="notice"><%= flash[:notice] %></div>
 <% end %>
+
+<div class="field_with_errors">
+<% if flash[:errors] %>
+  <% flash[:errors].each do |error| %>
+    <li> <%= error %> </li>
+  <% end %>
+<% end %>
+</div>

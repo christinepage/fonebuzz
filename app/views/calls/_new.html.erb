@@ -1,5 +1,18 @@
 <%= form_for @call, :url => {:action => "create"} do |f| %>
-<%= f.text_field :tel_num, :maxlength => 14 %>        
-<%= f.text_field :delay, :maxlength => 4 %>
-<%= f.submit "Make Call"%>
+  <table>
+    <thead>
+      <tr>
+        <th>Tel Number</th>
+        <th>Delay</th>
+        <th></th>
+      </tr>    
+    </thead>
+
+    <tbody>
+        <tr>
+          <td><%= f.text_field :tel_num, :maxlength => 14 %></td>
+          <td><%= f.text_field :delay, :maxlength => 4 %></td>
+  		    <td><%= f.submit "Make Call"%></td>
+    </tbody>
+  </table>
 <% end %>
