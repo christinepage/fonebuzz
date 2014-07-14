@@ -5,6 +5,7 @@
       <tr>
         <th>Tel Number</th>
         <th>Time</th>
+        <th>Keyed Num</th>
         <th>Delay</th>
         <th></th>
       </tr>    
@@ -15,6 +16,7 @@
         <tr>
           <td><%= call.tel_num %></td>
           <td><%= call.call_dt %></td>
+          <td><%= call.keyed_num %></td>
           <td><%= call.delay %></td>
   		    <td>
             <%= button_to("Make Call", :action => "make_call",

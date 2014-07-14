@@ -36,12 +36,12 @@ class TwilioController < ApplicationController
     response = Twilio::TwiML::Response.new do |r|
       if call && call.keyed_num
         logger.debug "voice keyed_num: #{call.keyed_num}"
-        r.Say 'Hello there. You previously entered #{call.keyed_num}'
+        r.Say "Hello there. You previously entered #{call.keyed_num}"
         r.Say "Your results are " + FizzBuzz::str_to(call.keyed_num).join(", ")
       else         
-        r.Say 'Hello there. '
+        r.Say "Hello there."
         r.Gather :numDigits => '1', :action => 'handlegather', :method => 'post' do |g|
-          g.Say 'Please enter a number.'        
+          g.Say "Please enter a number."
         end
       end
     end
