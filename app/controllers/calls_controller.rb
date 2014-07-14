@@ -1,9 +1,9 @@
 class CallsController < ApplicationController
 
   before_action :set_call, :only => [:make_call]
-	#before_action :set_call_list, :only => [:index]
 
  # GET /calls
+ # display all previous calls + a form for entering a new call
   def index
   	@call = Call.new
     @calls = Call.all
@@ -15,6 +15,7 @@ class CallsController < ApplicationController
   end
 
   # POST /calls
+  # creating a call in this app is synonymous with calling the #
   def create
     @call = Call.new(call_params)
 
@@ -30,8 +31,11 @@ class CallsController < ApplicationController
 
   # POST /calls/:id/make_call
   def make_call
+  	# either set flash or append to it, this informational message
   	(flash[:notice] ||= "") << " Dialing " + @call.tel_num + "..."
-  	redirect_to :controller => 'twilio', :action => "initiate_call",
+
+  	# let the twilio controller handle calling the #
+  	redirect_to :controller => "twilio", :action => "initiate_call",
   		:tel_num => @call.tel_num, :call_id => @call.id
   end
 

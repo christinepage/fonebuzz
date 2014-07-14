@@ -1,6 +1,6 @@
 module FizzBuzz
 extend self
-  def str_to num
+  def listing num
     (1..num).map do |x|
       if ((x%15) == 0)
         "FizzBuzz"

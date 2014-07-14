@@ -10,8 +10,8 @@ Monkey::Application.routes.draw do
 
   post 'calls/:id/make_call' => 'calls#make_call'
 
-  post 'twilio/voice' => 'twilio#voice'
-  post 'twilio/handlegather' => 'twilio#handlegather'
+  post 'twilio/fizzbuzz_greeting' => 'twilio#fizzbuzz_greeting'
+  post 'twilio/fizzbuzz_get_digits' => 'twilio#fizzbuzz_get_digits'
   get 'twilio/call' => 'twilio#initiate_call'
 
   # Example of regular route:
