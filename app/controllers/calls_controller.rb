@@ -32,7 +32,7 @@ class CallsController < ApplicationController
   def make_call
   	(flash[:notice] ||= "") << " Dialing " + @call.tel_num + "..."
   	redirect_to :controller => 'twilio', :action => "initiate_call",
-  		:tel_num => @call.tel_num
+  		:tel_num => @call.tel_num, :call_id => @call.id
   end
 
   private
