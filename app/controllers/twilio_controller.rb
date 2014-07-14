@@ -59,8 +59,26 @@ class TwilioController < ApplicationController
     render_twiml response
   end
 
-end
+  def initiate_call
+    account_sid = 'AC6b20bf0855729dc0658a845feb82a259'
+    auth_token = 'ce3887304e72ec11afbb73811c9305ae'
+    begin
+      @client = Twilio::REST::Client.new account_sid, auth_token
+      twilio_tel_num = '+1' + params[:tel_num]
 
+      call = @client.account.calls.create(
+        :url => 'http://fast-sea-2300.herokuapp.com/twilio/voice',
+        :to => twilio_tel_num,
+        :from => '+17079876311')
+    rescue Twilio::REST::RequestError => e
+      logger.debug e.message
+      flash[:notice] = "The call to #{params[:tel_num]} did not go through."
+      (flash[:errors] ||= []) << e.message
+    end
+    redirect_to :controller => 'calls', :action => 'index'
+  end
+
+end
 
 def integer_str? num
   Integer(num)

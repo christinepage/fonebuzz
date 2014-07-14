@@ -31,7 +31,9 @@ class CallsController < ApplicationController
   # POST /calls/:id/make_call
   def make_call
   	(flash[:notice] ||= "") << " Dialing " + @call.tel_num + "..."
-  	redirect_to :action => 'index'
+  	redirect_to :controller => 'twilio', :action => "initiate_call",
+  		:tel_num => @call.tel_num
+  	#redirect_to :action => 'index'
   end
 
   private
