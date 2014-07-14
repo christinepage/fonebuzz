@@ -1,5 +1,5 @@
 module FizzBuzz
-
+extend self
   def str_to num
     logger.debug "Logging from the new fizzbuzz"
     (1..num).map do |x|
