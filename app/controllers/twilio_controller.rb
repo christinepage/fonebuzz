@@ -1,6 +1,5 @@
 require 'twilio-ruby'
 require 'FizzBuzz'
-require 'TwilioConfig'
  
 class TwilioController < ApplicationController
   include Webhookable
