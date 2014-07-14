@@ -1,13 +1,14 @@
 <h2>Initiate a new call</h2>
 
-<%= render 'new' %>
-
-<br><hr>
-
+<!-- entry form for new call -->
+<%= render 'new' %>     
+<br>
+<hr>
+<!-- display previous calls -->
 <%= render 'list' %>
-
 <br>
 
+<!-- Display notices and errors -->
 <% if flash[:notice] %>
     <div class="notice"><%= flash[:notice] %></div>
 <% end %>
