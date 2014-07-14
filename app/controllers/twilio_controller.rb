@@ -104,7 +104,7 @@ class TwilioController < ApplicationController
       logger.debug "url: #{request.original_url}"
       logger.debug "par: #{params}"
       logger.debug "provided sig:   #{signature}"
-      logger.debug "calculated sig: #{validator.build_signature_for(uri, params)}"
+      logger.debug "calculated sig: #{validator.build_signature_for(request.original_url, params)}"
 
       response = Twilio::TwiML::Response.new do |r|     
         r.Say 'Sorry you are not authorized to use this application.'
