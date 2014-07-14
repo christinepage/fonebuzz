@@ -2,3 +2,4 @@ twilio_signature_header: HTTP_X_TWILIO_SIGNATURE
 auth_token: ce3887304e72ec11afbb73811c9305ae
 account_sid: AC6b20bf0855729dc0658a845feb82a259
 caller: +17079876311
+fizzbuzz_url: "http://fast-sea-2300.herokuapp.com/twilio/fizzbuzz_greeting"

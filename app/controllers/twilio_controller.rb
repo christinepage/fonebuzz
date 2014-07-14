@@ -18,7 +18,7 @@ class TwilioController < ApplicationController
     response = Twilio::TwiML::Response.new do |r|
       if call && call.keyed_num   # read what's stored in db
         r.Say "Hello there. You previously entered #{call.keyed_num}"
-        r.Say "Your results are " + FizzBuzz::listing(call.keyed_num).join(", ")
+        r.Say fizzbuzz_results call.keyed_num
 
       else                        # either this request did not originate from
                                   # this app or keyed_num is not stored
@@ -36,18 +36,22 @@ class TwilioController < ApplicationController
     call = Call.find_by(:call_sid => params['CallSid'])
     response = Twilio::TwiML::Response.new do |r|
       input_num = params['Digits'] || "nothing"
-      r.Say 'You entered ' + input_num
+      r.Say "You entered " + input_num
       if (integer_str? input_num)
         if (call)                  # request is the result of initiate_call
           call.update(:keyed_num => Integer(input_num))   # store key the user entered
         end
-        r.Say "Your results are " + FizzBuzz::listing(Integer(input_num)).join(", ")
+        r.Say fizzbuzz_results input_num
 
       else                         # they entered something non-numeric like '*'
         r.Say "I have no results for that entry."
       end
     end
     render_twiml response
+  end
+
+  def fizzbuzz_results input_num
+    "Your results are " + FizzBuzz::listing(Integer(input_num)).join(", ")
   end
 
   def initiate_call
@@ -68,7 +72,7 @@ class TwilioController < ApplicationController
 
       # call the phone number w/ our app and let :url handle the call
       twilio_call = client.account.calls.create(
-        :url => 'http://fast-sea-2300.herokuapp.com/twilio/fizzbuzz_greeting',
+        :url => TwilioConfig.config_param('fizzbuzz_url'),
         :to => twilio_tel_num,
         :from => TwilioConfig.config_param('caller'))
 
