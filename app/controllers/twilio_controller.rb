@@ -8,7 +8,7 @@ class TwilioController < ApplicationController
 
   # validate_request is not working correctly, so commented out, so the rest
   # of the app can function
-  #before_action :validate_request
+  before_action :validate_request
 
   skip_before_action :verify_authenticity_token
 
@@ -100,7 +100,7 @@ class TwilioController < ApplicationController
     
     if !(validator.validate(request.original_url, params, signature))
       logger.debug "Validation failed"
-      logger.debug "tok: #{@auth_token}"
+      logger.debug "tok: #{TwilioConfig.config_param('auth_token')}"
       logger.debug "url: #{request.original_url}"
       logger.debug "par: #{params}"
       logger.debug "provided sig:   #{signature}"
