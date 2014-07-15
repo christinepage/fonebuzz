@@ -11,6 +11,7 @@ Monkey::Application.routes.draw do
   post 'calls/:id/make_call' => 'calls#make_call'
 
   post 'twilio/fizzbuzz_greeting' => 'twilio#fizzbuzz_greeting'
+  get  'twilio/fizzbuzz_greeting' => 'twilio#fizzbuzz_greeting'
   post 'twilio/fizzbuzz_get_digits' => 'twilio#fizzbuzz_get_digits'
   get 'twilio/call' => 'twilio#initiate_call'
 
