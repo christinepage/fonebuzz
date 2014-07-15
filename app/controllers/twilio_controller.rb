@@ -5,12 +5,10 @@ class TwilioController < ApplicationController
   include Webhookable
  
   after_filter :set_header
-
-  # validate_request is not working correctly, so commented out, so the rest
-  # of the app can function
-  before_action :validate_request, :only => [:fizzbuzz_greeting, :fizzbuzz_get_digits]
-
   skip_before_action :verify_authenticity_token
+
+  # these actions can only come from twilio, so validate signature
+  before_action :validate_request, :only => [:fizzbuzz_greeting, :fizzbuzz_get_digits]
 
   def fizzbuzz_greeting
     # get call record associated w/ this Twilio Sid
@@ -96,22 +94,12 @@ class TwilioController < ApplicationController
   end
 
   # compare the signature from the http header w/ our computation
-  # I am not getting the same signature - either using the wrong url
-  # or wrong parameters to create the signature
   def validate_request
     validator = Twilio::Util::RequestValidator.new(TwilioConfig.config_param('auth_token'))
     signature = request.headers[TwilioConfig.config_param('twilio_signature_header')]
 
     # remove rails specific headers that Twilio wouldn't know anything about
     twilio_params = params.reject { |k,v|  ["action", "controller"].include?(k)}
-
-    logger.debug "authtoken:      #{TwilioConfig.config_param('auth_token')}"
-    logger.debug "url:            #{request.original_url}"
-    logger.debug "params:         #{params}"
-    logger.debug "twilio_params:  #{twilio_params}"
-    logger.debug "provided sig:   #{signature}"
-    logger.debug "calculated sig: #{validator.build_signature_for(
-      request.original_url, twilio_params)}"
 
     if !(validator.validate(request.original_url, twilio_params, signature))
       logger.debug "Validation failed"
