@@ -97,15 +97,18 @@ class TwilioController < ApplicationController
   def validate_request
     validator = Twilio::Util::RequestValidator.new(TwilioConfig.config_param('auth_token'))
     signature = request.headers[TwilioConfig.config_param('twilio_signature_header')]
-    
-    if !(validator.validate(request.original_url, params, signature))
-      logger.debug "Validation failed"
-      logger.debug "tok: #{TwilioConfig.config_param('auth_token')}"
-      logger.debug "url: #{request.original_url}"
-      logger.debug "par: #{params}"
-      logger.debug "provided sig:   #{signature}"
-      logger.debug "calculated sig: #{validator.build_signature_for(request.original_url, params)}"
+    twilio_params = params.reject { |k,v|  ["action", "controller"].include?(k)}
 
+    logger.debug "authtoken:      #{TwilioConfig.config_param('auth_token')}"
+    logger.debug "url:            #{request.original_url}"
+    logger.debug "params:         #{params}"
+    logger.debug "twilio_params:  #{twilio_params}"
+    logger.debug "provided sig:   #{signature}"
+    logger.debug "calculated sig: #{validator.build_signature_for(request.original_url, params)}"
+
+    if !(validator.validate(request.original_url, twilio_params, signature))
+      logger.debug "Validation failed"
+ 
       response = Twilio::TwiML::Response.new do |r|     
         r.Say 'Sorry you are not authorized to use this application.'
       end
