@@ -8,7 +8,7 @@ class TwilioController < ApplicationController
 
   # validate_request is not working correctly, so commented out, so the rest
   # of the app can function
-  before_action :validate_request :only => [:fizzbuzz_greeting, :fizzbuzz_get_digits]
+  before_action :validate_request, :only => [:fizzbuzz_greeting, :fizzbuzz_get_digits]
 
   skip_before_action :verify_authenticity_token
 
