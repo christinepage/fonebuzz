@@ -68,11 +68,15 @@ class TwilioController < ApplicationController
       # our call controller deals w/ 10 digit numbers, no country code
       # so add '+1' for twilio 
       twilio_tel_num = '+1' + params[:tel_num]
-      logger.debug "calling #{twilio_tel_num} ..."
+
+      fizzbuzz_url = "http://" + request.host_with_port + TwilioConfig.config_param('fizzbuzz_url')
+
+      logger.debug "calling #{twilio_tel_num} w/ url #{fizzbuzz_url} handler..."
 
       # call the phone number w/ our app and let :url handle the call
+
       twilio_call = client.account.calls.create(
-        :url => TwilioConfig.config_param('fizzbuzz_url'),
+        :url => fizzbuzz_url,
         :to => twilio_tel_num,
         :from => TwilioConfig.config_param('caller'))
 
