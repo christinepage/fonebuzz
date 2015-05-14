@@ -9,6 +9,7 @@ extend self
       puts "loading Twilio config..."
       @config_hash = YAML.load(ERB.new(File.read("#{config_file}")).result) || {}
     end
+    @config_hash
 	end
 
 	def config_param(key)
