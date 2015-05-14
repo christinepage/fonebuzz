@@ -7,8 +7,8 @@ extend self
 	def config_hash
 	  if @config_hash.nil?
       puts "loading Twilio config..."
+      @config_hash = YAML.load(ERB.new(File.read("#{config_file}")).result) || {}
     end
-	  @config_hash ||= YAML.load_file("#{config_file}") || {}
 	end
 
 	def config_param(key)
